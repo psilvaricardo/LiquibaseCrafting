@@ -2,7 +2,8 @@ version: '3.8'
 
 services:
   postgres:
-    build: .
+    build:
+      context: ./postgres
     environment:
       POSTGRES_USER: testuser
       POSTGRES_PASSWORD: docker
@@ -11,6 +12,17 @@ services:
       - "5432:5432"
     networks:
       - mynetwork
+
+  liquibase:
+    build:
+      context: ./liquibase
+    volumes:
+      - ./liquibase/changelog:/liquibase/
+    depends_on:
+      - postgres
+    networks:
+      - mynetwork
+    entrypoint: /liquibase-entrypoint.sh
 
   pgadmin:
     image: dpage/pgadmin4
