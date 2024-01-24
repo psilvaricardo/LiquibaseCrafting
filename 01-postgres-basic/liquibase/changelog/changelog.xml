@@ -6,12 +6,17 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd
       http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.5.xsd">  
     
-    <changeSet  author="psilvaricardo"  id="1185214997195-1">  
-        <createTable  name="department">  
-            <column  name="DEPTNO"  type="INTEGER"/>  
-            <column  name="DNAME"  type="VARCHAR2(15)"/>  
-            <column  name="LOC"  type="VARCHAR2(255)"/>  
+    <changeSet author="psilvaricardo" id="1">
+        <createTable tableName="department">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="DEPTNO" type="INTEGER"/>
+            <column name="DNAME" type="VARCHAR2(15)"/>
+            <column name="LOC" type="VARCHAR2(255)"/>
         </createTable>
     </changeSet>
+
+    <!-- Add more changeSets if needed -->
     
 </databaseChangeLog>

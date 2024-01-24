@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   postgres:
+    container_name: postgres_container
     build:
       context: ./postgres
     environment:
@@ -12,20 +13,28 @@ services:
       - "5432:5432"
     networks:
       - mynetwork
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U testuser -d testing -h localhost -p 5432"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   liquibase:
-    build:
-      context: ./liquibase
-    volumes:
-      - ./liquibase/changelog:/liquibase/
+    image: liquibase/liquibase:latest-alpine
+    container_name: liquibase_container
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./liquibase/changelog:/liquibase/changelog/
+    working_dir: /liquibase
+    command: liquibase update --changeLogFile=/changelog/changelog.xml --url=jdbc:postgresql://postgres:5432/testing --username=testuser --password=docker
     networks:
       - mynetwork
-    entrypoint: /liquibase-entrypoint.sh
 
   pgadmin:
     image: dpage/pgadmin4
+    container_name: pgadmin_container
     restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: ricardo072@gmail.com
@@ -40,7 +49,8 @@ services:
       - mynetwork
     tty: true
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
 networks:
   mynetwork:
