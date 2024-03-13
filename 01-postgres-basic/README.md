@@ -11,18 +11,15 @@ To use this project, follow these steps:
    ```bash
    git clone <repository_url>
 
-
 2. Navigate to the project directory:
 
    ```bash
    cd LiquibaseDockerProject
 
-
 3. Start the Docker containers using Docker Compose:
 
    ```bash
    docker-compose up --build
-
 
 4. **Access pgAdmin:**  
    Access pgAdmin in your web browser at [http://localhost:5050](http://localhost:5050). Use the following credentials:
